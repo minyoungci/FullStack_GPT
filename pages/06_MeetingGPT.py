@@ -1,3 +1,3 @@
 import streamlit as st 
 
-st.title("Metting GPT")
+st.title("Meeting GPT")
