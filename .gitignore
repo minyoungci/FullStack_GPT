@@ -5,5 +5,5 @@ env/
 files/
 .cache/
 
-./.streamlit
+.streamlit/
 
