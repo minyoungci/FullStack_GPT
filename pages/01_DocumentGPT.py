@@ -1,6 +1,7 @@
 import streamlit as st 
 import time
 
+
 st.set_page_config(
     page_title = 'DocumentGPT',
     page_icon='🧊',
@@ -8,8 +9,8 @@ st.set_page_config(
 
 st.title("DocumentGPT")
 
-if "messages" not in st.session_state:
-    st.session_state["messages"] = []
+if "messages" not in st.session_state: # messages가 session_state에 없는지 확인
+    st.session_state["messages"] = [] # 없으면 intialize 해준다.
 
 
 def send_message(message, role, save=True):
