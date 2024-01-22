@@ -7,9 +7,9 @@ from typing import Any, Dict, List, Optional, Text
 from langchain.chat_models import ChatOpenAI
 from langchain.document_loaders import UnstructuredFileLoader
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings, CacheBackedEmbeddings
+from langchain.embeddings import CacheBackedEmbeddings , OllamaEmbeddings
 from langchain.vectorstores import FAISS
-from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatOllama
 from langchain.storage import LocalFileStore
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnablePassthrough, RunnableLambda
@@ -35,7 +35,8 @@ class ChatCallBackHandler(BaseCallbackHandler):
         self.message_box.markdown(self.message)
 
 
-llm = ChatOpenAI(
+llm = ChatOllama(
+    model="mistral:latest",
     temperature=0.1,
     streaming=True, # 실시간으로 출력결과 콘솔에 보여줌
     callbacks = [
@@ -49,11 +50,11 @@ if "messages" not in st.session_state:
 @st.cache_data(show_spinner="Embedding file...") # file이 동일하다면 streamlit은 이 함수를 재실행시키지 않는다. 처음에만 실행되고 두 번째에는 파일이 변경되지 않으면 실행하지 않음. 
 def embed_file(file):
     file_content = file.read()
-    file_path = f"./.cache/files/{file.name}"
+    file_path = f"./.cache/private_files/{file.name}"
 
     with open(file_path, "wb") as f:
         f.write(file_content)
-        cache_dir = LocalFileStore(f"./.cache/embeddings/{file.name}")
+        cache_dir = LocalFileStore(f"./.cache/private_embeddings/{file.name}")
 
     splitter = CharacterTextSplitter.from_tiktoken_encoder(
         separator="\n",
@@ -62,7 +63,9 @@ def embed_file(file):
     )
     loader = UnstructuredFileLoader(file_path)
     docs = loader.load_and_split(text_splitter=splitter)
-    embeddings = OpenAIEmbeddings()
+    embeddings = OllamaEmbeddings(
+        model = "mistral:latest"
+    )
     cached_embeddings = CacheBackedEmbeddings.from_bytes_store(embeddings, cache_dir)
     vectorstore = FAISS.from_documents(docs, cached_embeddings)
     retriever = vectorstore.as_retriever()
@@ -91,9 +94,9 @@ prompt = ChatPromptTemplate.from_messages([
         Answer the question using ONLY the following context. If you don't know the answer just say you don't know. DON'T make anythin up.
      
      Context: {context}
+     Question: {question}
      """
     ),
-    ("human", "{question}"),
 ])
 
 st.title("Minyoung GPT")
