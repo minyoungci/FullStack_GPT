@@ -2,7 +2,7 @@ import streamlit as st
 from langchain.document_loaders import SitemapLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-
+# 수정
 def parse_page(soup): # 우리가 포함하고 싶은 text를 반환하는 함수. document의 전체 HTML을 가진 beautiful soup object 값이 여기에 오게 됨.즉 여기서 검색 가능
     header = soup.find("header") # 섹션을 선택할 수 있음. header,data,footer 등등
     footer = soup.find("footer")
