@@ -18,13 +18,12 @@ llm = ChatOpenAI(
     temperature=0.1,
 )
 
-has_transcript = os.path.exists("./.cache/podcast.txt") # transcript가 존재하는지 확인. 생성 비용이 비싸므로 있으면 다시 실행하지 않도록 !
-
 splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
-    chunk_size=800,
-    chunk_overlap=100,
-)
+        chunk_size=800,
+        chunk_overlap=100,
+    )
 
+has_transcript = os.path.exists("./.cache/podcast.txt") # transcript가 존재하는지 확인. 생성 비용이 비싸므로 있으면 다시 실행하지 않도록 !
 
 @st.cache_data()
 def embed_file(file_path):
@@ -190,3 +189,16 @@ if video:
                     }) 
 
                 st.write(summary)
+            st.write(summary)
+
+    with qa_tab:
+
+        retriever = embed_file(transcript_path) 
+        docs = retriever.invoke("do they talk about LLM?")
+
+        st.write(docs)  
+
+
+
+
+
