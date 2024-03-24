@@ -14,6 +14,12 @@ from langchain.schema import StrOutputParser
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings import CacheBackedEmbeddings, OpenAIEmbeddings
 
+from dotenv import load_dotenv
+import os
+
+dotenv_path = '/Users/kimminyoung/minyoungxi/FullStack_GPT/.env'
+load_dotenv(dotenv_path=dotenv_path)
+
 llm = ChatOpenAI(
     temperature=0.1,
 )
