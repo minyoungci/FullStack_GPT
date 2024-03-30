@@ -5,3 +5,5 @@ env/
 files/
 .cache/
 .streamlit/ 
+
+recap/cache/
