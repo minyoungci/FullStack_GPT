@@ -60,7 +60,7 @@ with st.sidebar:
     st.divider()
     st.markdown(
         """
-        GitHub 링크: https://github.com/LifeFi/py_w08_fullstack_gpt_d15/blob/d26_quizgpt/pages/D26_QuizGPT.py
+        GitHub 링크: https://github.com/minyoungci/FullStack_GPT/blob/master/recap/QuizGPT.py
         """
     )
 
