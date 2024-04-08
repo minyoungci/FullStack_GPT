@@ -1,12 +1,37 @@
 from langchain.document_loaders import SitemapLoader
 from langchain.document_transformers import Html2TextTransformer 
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chat_models import ChatOpenAI
 import streamlit as st
 
+def parse_page(soup):
+    header = soup.find("header")
+    footer = soup.find("footer")
+    if header:
+        header.decompose()
+    if footer:
+        footer.decompose()
+    return (
+        str(soup.get_text())
+        .replace("\n", " ")
+        .replace("\xa0", " ")
+        .replace("CloseSearch Submit Blog", "")
+    )
+
 @st.cache_data
 def load_website(url):
-    loader = SitemapLoader(url)
-    docs = loader.load()
+    splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+        chunk_size=800,
+        chunk_overlap=200,
+    )
+    loader = SitemapLoader(
+        url,
+        filter_urls=[
+            r"^(.*\/blog\/).*",
+        ],
+        parsing_function=parse_page,
+    )
+    docs = loader.load_and_split(text_splitter=splitter)
     st.write(docs)
     return docs
 
