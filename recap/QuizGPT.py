@@ -78,7 +78,7 @@ else:
         def set_quiz_submitted(value: bool):
             st.session_state.update({"quiz_submitted": value})
 
-        @st.cache_data(show_spinner="퀴즈를 맛있게 굽고 있어요...")
+        @st.cache_data(show_spinner="퀴즈를 만드는 중입니다...")
         def run_quiz_chain(*, subject, count, difficulty):
             chain = prompt | llm
             return chain.invoke(
