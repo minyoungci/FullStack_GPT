@@ -12,7 +12,6 @@ from langchain.utilities import DuckDuckGoSearchAPIWrapper
 llm = ChatOpenAI(temperature=0.1, model_name="gpt-3.5-turbo-1106")
 
 alpha_vantage_api_key = os.environ.get("ALPHA_VANTAGE_API_KEY")
-openai_api_key = os.environ.get("OPENAI_API_KEY")
 
 
 class StockMarketSymbolSearchToolArgsSchema(BaseModel):
